@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -13,6 +14,7 @@ import javax.swing.JTextField;
 public class PDF {
     Connection con = Conect.Connect();
     PreparedStatement ps;
+    int id;
     
     public void SubirArchivo(File archivoPDF){
         try {
@@ -26,7 +28,16 @@ public class PDF {
             int val = ps.executeUpdate();
             
             if (val > 0) {
-                JOptionPane.showMessageDialog(null, "Archivo subido Exitosamente");
+                
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        id = generatedKeys.getInt(1);
+                        JOptionPane.showMessageDialog(null, "Archivo subido exitosamente. ID: " + id);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Archivo subido, pero no se pudo obtener el ID.");
+                    }
+                }
+                
             } else {
                 JOptionPane.showMessageDialog(null, "No se ha subido el archivo");
             }
@@ -77,5 +88,5 @@ public class PDF {
         } catch (HeadlessException | NumberFormatException | SQLException e) {
             System.err.println(e);
         }
-    }
+    }    
 }

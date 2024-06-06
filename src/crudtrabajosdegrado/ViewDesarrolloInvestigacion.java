@@ -1,9 +1,17 @@
 package crudtrabajosdegrado;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
-    
+
     Usuarios user = new Usuarios();
     DesarrolloInvestigacion invest = new DesarrolloInvestigacion();
+    PDF myPDF = new PDF();
+    File archivoPDF = null;
 
     public ViewDesarrolloInvestigacion() {
         initComponents();
@@ -39,6 +47,14 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JToggleButton();
         btnLimpiar = new javax.swing.JToggleButton();
         btnSalir = new javax.swing.JToggleButton();
+        jLabel9 = new javax.swing.JLabel();
+        btnSubirArc = new javax.swing.JButton();
+        btnCambiar = new javax.swing.JButton();
+        btnEliminarArc = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jSeparator2 = new javax.swing.JSeparator();
+        txtIDarc = new javax.swing.JTextField();
+        jlbNombreArchivo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,15 +86,23 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "1er Estudiante", "2do Estudiante", "3er estudiante", "docente", "codirector", "tipo trabajo", "estado", "proyecto"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -87,15 +111,15 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
 
         cmbEstudiante1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -128,6 +152,34 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
             }
         });
 
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        jLabel9.setText("Archivo PDF");
+
+        btnSubirArc.setText("SUBIR");
+        btnSubirArc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubirArcActionPerformed(evt);
+            }
+        });
+
+        btnCambiar.setText("CAMBIAR");
+        btnCambiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCambiarActionPerformed(evt);
+            }
+        });
+
+        btnEliminarArc.setText("ELIMINAR");
+        btnEliminarArc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarArcActionPerformed(evt);
+            }
+        });
+
+        txtIDarc.setEnabled(false);
+
+        jlbNombreArchivo.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -144,7 +196,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                                 .addComponent(cmbEstudiante1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(23, 23, 23)
                                 .addComponent(jTextField1))
@@ -163,18 +215,39 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
                                     .addComponent(cmbCodirector, 0, 200, Short.MAX_VALUE)
                                     .addComponent(cmbTipoProyecto, 0, 200, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addComponent(btnSalir))
+                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jlbNombreArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGap(99, 99, 99)
+                                    .addComponent(jLabel9)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtIDarc, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addGap(11, 11, 11)
+                                    .addComponent(btnSubirArc)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnCambiar)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnEliminarArc)))
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnCrear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnModificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLimpiar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(132, 132, 132)
+                                .addComponent(btnSalir))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnCrear)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnModificar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnEliminar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLimpiar)))))
+                .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -216,6 +289,21 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
                         .addComponent(cmbTipoProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel8)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtIDarc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCambiar)
+                    .addComponent(btnSubirArc)
+                    .addComponent(btnEliminarArc))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jlbNombreArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCrear)
                     .addComponent(btnModificar)
@@ -223,7 +311,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
                     .addComponent(btnLimpiar))
                 .addGap(18, 18, 18)
                 .addComponent(btnSalir)
-                .addGap(32, 32, 32))
+                .addContainerGap())
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -239,6 +327,46 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
     private void cmbEstudiante1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstudiante1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbEstudiante1ActionPerformed
+
+    private void btnSubirArcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirArcActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccionar archivo PDF");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Files", "pdf"));
+        int val = fileChooser.showOpenDialog(null);
+
+        if (val == JFileChooser.APPROVE_OPTION) {
+            archivoPDF = fileChooser.getSelectedFile();
+            String nombre = fileChooser.getName(archivoPDF);
+            jlbNombreArchivo.setText(nombre);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se ha elegido ningun archivo");
+        }
+    }//GEN-LAST:event_btnSubirArcActionPerformed
+
+    private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
+        if (archivoPDF == null) {
+            JOptionPane.showMessageDialog(null, "No se puede modificar el archivo porque no se ha insertado");
+        } else {
+            archivoPDF = null;
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Seleccionar archivo PDF");
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Files", "pdf"));
+            int val = fileChooser.showOpenDialog(null);
+
+            if (val == JFileChooser.APPROVE_OPTION) {
+                archivoPDF = fileChooser.getSelectedFile();
+                String nombre = fileChooser.getName(archivoPDF);
+                jlbNombreArchivo.setText(nombre);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se ha elegido ningun archivo");
+            }
+        }
+    }//GEN-LAST:event_btnCambiarActionPerformed
+
+    private void btnEliminarArcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarArcActionPerformed
+        archivoPDF = null;
+        jlbNombreArchivo.setText("");
+    }//GEN-LAST:event_btnEliminarArcActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -273,11 +401,14 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCambiar;
     private javax.swing.JButton btnCrear;
     private javax.swing.JToggleButton btnEliminar;
+    private javax.swing.JButton btnEliminarArc;
     private javax.swing.JToggleButton btnLimpiar;
     private javax.swing.JToggleButton btnModificar;
     private javax.swing.JToggleButton btnSalir;
+    private javax.swing.JButton btnSubirArc;
     private javax.swing.JComboBox<String> cmbCodirector;
     private javax.swing.JComboBox<String> cmbDocente;
     private javax.swing.JComboBox<String> cmbEstudiante1;
@@ -292,9 +423,14 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jlbNombreArchivo;
+    private javax.swing.JTextField txtIDarc;
     // End of variables declaration//GEN-END:variables
 }
