@@ -97,7 +97,7 @@ public class ViewLogin extends javax.swing.JFrame {
 
     private void btnInicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioDeSesionActionPerformed
         try {
-            ps = con.prepareStatement("SELECT * FROM usuarios WHERE correo_inti_usuario = ? AND contrasena = ?");
+            ps = con.prepareStatement("SELECT * FROM usuarios WHERE correo_institucional = ? AND contrasena = ?");
             
             ps.setString(1, txtCorreo.getText());
             ps.setString(2, txtContrasena.getText());
@@ -106,7 +106,7 @@ public class ViewLogin extends javax.swing.JFrame {
             
             if(rs.next()){
                 JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
-                rol = (byte)rs.getInt("fk_rol");
+                rol = (byte) rs.getInt("fk_rol");
                 
                 this.setVisible(false);
                 
@@ -117,7 +117,7 @@ public class ViewLogin extends javax.swing.JFrame {
             }
             
         } catch (Exception e) {
-            System.err.println("");
+            System.err.println(e);
         }
     }//GEN-LAST:event_btnInicioDeSesionActionPerformed
 

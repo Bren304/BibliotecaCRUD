@@ -36,7 +36,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        nomProy = new javax.swing.JTextField();
         cmbEstudiante1 = new javax.swing.JComboBox<>();
         cmbEstudiante2 = new javax.swing.JComboBox<>();
         cmbEstudiante3 = new javax.swing.JComboBox<>();
@@ -71,6 +71,11 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
         jLabel4.setText("Estudiante 3");
 
         btnCrear.setText("SUBIR");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel5.setText("Nombre Proyecto");
@@ -199,7 +204,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel5)
                                 .addGap(23, 23, 23)
-                                .addComponent(jTextField1))
+                                .addComponent(nomProy))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3)
@@ -262,7 +267,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
                                 .addGap(19, 19, 19)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel5)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(nomProy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(17, 17, 17)
                                 .addComponent(jLabel2))
                             .addGroup(layout.createSequentialGroup()
@@ -338,6 +343,9 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
             archivoPDF = fileChooser.getSelectedFile();
             String nombre = fileChooser.getName(archivoPDF);
             jlbNombreArchivo.setText(nombre);
+
+            myPDF.SubirArchivo(archivoPDF);
+            txtIDarc.setText(String.valueOf(myPDF.id));
         } else {
             JOptionPane.showMessageDialog(null, "No se ha elegido ningun archivo");
         }
@@ -347,26 +355,45 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
         if (archivoPDF == null) {
             JOptionPane.showMessageDialog(null, "No se puede modificar el archivo porque no se ha insertado");
         } else {
-            archivoPDF = null;
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Seleccionar archivo PDF");
-            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Files", "pdf"));
-            int val = fileChooser.showOpenDialog(null);
+            int yes = JOptionPane.showConfirmDialog(null, "¿Está seguro de cambiar este archivo?");
+            if (yes == JOptionPane.YES_OPTION) {
+                archivoPDF = null;
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Seleccionar archivo PDF");
+                fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF Files", "pdf"));
+                int val = fileChooser.showOpenDialog(null);
 
-            if (val == JFileChooser.APPROVE_OPTION) {
-                archivoPDF = fileChooser.getSelectedFile();
-                String nombre = fileChooser.getName(archivoPDF);
-                jlbNombreArchivo.setText(nombre);
-            } else {
-                JOptionPane.showMessageDialog(null, "No se ha elegido ningun archivo");
+                if (val == JFileChooser.APPROVE_OPTION) {
+                    archivoPDF = fileChooser.getSelectedFile();
+                    String nombre = fileChooser.getName(archivoPDF);
+                    jlbNombreArchivo.setText(nombre);
+                    myPDF.ModificarArchivo(archivoPDF, txtIDarc);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se ha elegido ningun archivo");
+                }
             }
         }
     }//GEN-LAST:event_btnCambiarActionPerformed
 
     private void btnEliminarArcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarArcActionPerformed
-        archivoPDF = null;
-        jlbNombreArchivo.setText("");
+        int yes = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar este archivo?");
+
+        if (yes == JOptionPane.YES_OPTION) {
+            if (archivoPDF != null) {
+                myPDF.EliminarArchivo(txtIDarc);
+                archivoPDF = null;
+                jlbNombreArchivo.setText("");
+                myPDF.EliminarArchivo(txtIDarc);
+                txtIDarc.setText(null);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se puede eliminar un archivo que no existe");
+            }
+        }
     }//GEN-LAST:event_btnEliminarArcActionPerformed
+
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+
+    }//GEN-LAST:event_btnCrearActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -429,8 +456,8 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel jlbNombreArchivo;
+    private javax.swing.JTextField nomProy;
     private javax.swing.JTextField txtIDarc;
     // End of variables declaration//GEN-END:variables
 }

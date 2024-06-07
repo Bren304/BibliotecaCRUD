@@ -28,6 +28,11 @@ public class ViewMenu extends javax.swing.JFrame {
 
         jButton2.setText("Desarrollo Tec. & Investigavion");
         jButton2.setAlignmentY(0.0F);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Practicas");
 
@@ -73,6 +78,13 @@ public class ViewMenu extends javax.swing.JFrame {
     private void btnUsuareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuareActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnUsuareActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+       this.setVisible(false);
+       
+       ViewDesarrolloInvestigacion myProyecto = new ViewDesarrolloInvestigacion();
+       myProyecto.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
