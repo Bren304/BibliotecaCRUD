@@ -1,7 +1,6 @@
 package crudtrabajosdegrado;
 
 import java.awt.HeadlessException;
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -146,19 +145,25 @@ public class DesarrolloInvestigacion extends TrabajoDeGrado {
         int yes = JOptionPane.showConfirmDialog(null, "¿Está seguro de modificar este proyecto? \nLa unico que se puede modificar es el archivo PDF y el nombre del proyecto");
         if (yes == JOptionPane.YES_OPTION) {
             try {
+                ps = con.prepareStatement("UPDATE proy_investigacion SET nombre_proyecto = ?, id_pdf = ? WHERE id = ?");
+                
                 ps.setString(1, nomProy.getText());
                 ps.setInt(2, Integer.parseInt(idPDF.getText()));
-                ps.setInt(3, idProy);
-                ps.setInt(4, Integer.parseInt(idTrabajo.getText()));
+                ps.setInt(3, Integer.parseInt(txtidProy.getText()));
 
                 int val = ps.executeUpdate();
 
                 if (val > 0) {
                     JOptionPane.showMessageDialog(null, "Se ha actualizado la informacion");
+                    
+                    ps = con.prepareStatement("UPDATE trabajo_de_grado SET fecha_modificacion = CURRENT_DATE WHERE id = ?");
+                    ps.setInt(1, Integer.parseInt(idTrabajo.getText()));
+                    
+                    ps.executeUpdate();
                 } else {
                     JOptionPane.showMessageDialog(null, "No se ha podido actualizar");
                 }
-            } catch (Exception e) {
+            } catch (HeadlessException | NumberFormatException | SQLException e) {
                 System.err.println(e);
             }
         }
@@ -183,11 +188,6 @@ public class DesarrolloInvestigacion extends TrabajoDeGrado {
                 System.err.println(e);
             }
         }
-    }
-
-    @Override
-    public void Devolver() {
-
     }
 
     public void Limpiar() {
@@ -219,7 +219,7 @@ public class DesarrolloInvestigacion extends TrabajoDeGrado {
     public void LlenarTabla(JTable tabla) {
 
         String sql = """
-                     SELECT tg.id, u1.nombre_usuario, u2.nombre_usuario, u3.nombre_usuario, u4.nombre_usuario, u5.nombre_usuario, fecha_propuest, fecha_modificacion, fecha_aceptacion, tt.nombre_tipoTrab, ep.nom_estado, pi.nombre_proyecto, tg.estado
+                     SELECT tg.id, u1.nombre_usuario, u2.nombre_usuario, u3.nombre_usuario, u4.nombre_usuario, u5.nombre_usuario, fecha_propuest, fecha_modificacion, fecha_aceptacion, tt.nombre_tipoTrab, ep.nom_estado, pi.nombre_proyecto, tg.estado, tg.id_proyecto_investigacion, pi.id_pdf
                      FROM trabajo_de_grado tg LEFT JOIN usuarios u1 ON tg.id_estudiante1 = u1.id_usuario
                       LEFT JOIN usuarios u2 ON tg.id_estudiante2 = u2.id_usuario
                       LEFT JOIN usuarios u3 ON tg.id_estudiante3 = u3.id_usuario
@@ -238,7 +238,7 @@ public class DesarrolloInvestigacion extends TrabajoDeGrado {
             modelo.setRowCount(0); // Limpia la tabla
 
             String[] myTabla;
-            myTabla = new String[13];
+            myTabla = new String[15];
             
             while (rs.next()) {
                 myTabla[0] = Integer.toString(rs.getInt("tg.id"));
@@ -253,7 +253,10 @@ public class DesarrolloInvestigacion extends TrabajoDeGrado {
                 myTabla[9] = rs.getString("tt.nombre_tipoTrab");
                 myTabla[10] = rs.getString("ep.nom_estado");
                 myTabla[11] = rs.getString("pi.nombre_proyecto");
-                myTabla[12] = rs.getString("tg.estado");
+                myTabla[12] = Integer.toString(rs.getInt("tg.id_proyecto_investigacion"));
+                myTabla[13] = rs.getString("tg.estado");
+                myTabla[14] = Integer.toString(rs.getInt("pi.id_pdf"));
+                
                 modelo.addRow(myTabla);
             }
         } catch (Exception e) {
@@ -264,7 +267,7 @@ public class DesarrolloInvestigacion extends TrabajoDeGrado {
     public void SeleccionarFilas(JTable tabla){
         int tableSeleccionada = tabla.getSelectedRow();
         
-        txtidProy.setText(tabla.getValueAt(tableSeleccionada, 0).toString());
+        idTrabajo.setText(tabla.getValueAt(tableSeleccionada, 0).toString());
         estudiante1.setSelectedItem(tabla.getValueAt(tableSeleccionada, 1));
         estudiante2.setSelectedItem(tabla.getValueAt(tableSeleccionada, 2));
         estudiante2.setSelectedItem(tabla.getValueAt(tableSeleccionada, 3));
@@ -272,6 +275,8 @@ public class DesarrolloInvestigacion extends TrabajoDeGrado {
         codirector.setSelectedItem(tabla.getValueAt(tableSeleccionada, 5));
         tipoProy.setSelectedItem(tabla.getValueAt(tableSeleccionada, 9));
         nomProy.setText(tabla.getValueAt(tableSeleccionada, 11).toString());
+        txtidProy.setText(tabla.getValueAt(tableSeleccionada, 12).toString());
+        idPDF.setText(tabla.getValueAt(tableSeleccionada, 14).toString());
         
     }
 }

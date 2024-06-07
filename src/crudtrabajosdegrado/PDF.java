@@ -43,7 +43,7 @@ public class PDF {
             JOptionPane.showMessageDialog(null, e);
         }
     }
-
+    
     public void ModificarArchivo(File archivoPDF, JTextField id) {
         try {
             FileInputStream subArc = new FileInputStream(archivoPDF);

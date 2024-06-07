@@ -1,8 +1,6 @@
 package crudtrabajosdegrado;
 
 public class ViewMenu extends javax.swing.JFrame {
-
-    byte rol;
     
     public ViewMenu() {
         initComponents();
@@ -35,8 +33,18 @@ public class ViewMenu extends javax.swing.JFrame {
         });
 
         jButton3.setText("Practicas");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         btnRoles.setText("Roles");
+        btnRoles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRolesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,7 +84,9 @@ public class ViewMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUsuareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuareActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        ViewUsuarios usuView = new ViewUsuarios();
+        usuView.setVisible(true);
     }//GEN-LAST:event_btnUsuareActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -85,6 +95,20 @@ public class ViewMenu extends javax.swing.JFrame {
        ViewDesarrolloInvestigacion myProyecto = new ViewDesarrolloInvestigacion();
        myProyecto.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void btnRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRolesActionPerformed
+        this.setVisible(false);
+        
+        ViewRoles myViewRoles = new ViewRoles();
+        myViewRoles.setVisible(true);
+    }//GEN-LAST:event_btnRolesActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.setVisible(false);
+        
+        ViewPracticas myViewPractica = new ViewPracticas();
+        myViewPractica.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -116,12 +140,7 @@ public class ViewMenu extends javax.swing.JFrame {
                 new ViewMenu().setVisible(true);
             }
         });
-    }
-
-    public void setRol(byte rol) {
-        this.rol = rol;
-    }
-    
+    }  
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

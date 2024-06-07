@@ -12,7 +12,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
     DesarrolloInvestigacion invest = new DesarrolloInvestigacion();
     PDF myPDF = new PDF();
     File archivoPDF = null;
-
+    
     public ViewDesarrolloInvestigacion() {
         initComponents();
         user.LlenarComboEstudiantes(cmbEstudiante1, cmbEstudiante2, cmbEstudiante3);
@@ -54,7 +54,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
         btnEliminarArc = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jSeparator2 = new javax.swing.JSeparator();
-        txtIDarc = new javax.swing.JTextField();
+        txtIDArc = new javax.swing.JTextField();
         jlbNombreArchivo = new javax.swing.JLabel();
         txtIdTrabajo = new javax.swing.JTextField();
         txtIdProy = new javax.swing.JTextField();
@@ -94,17 +94,17 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "1er Estudiante", "2do Estudiante", "3er estudiante", "docente", "codirector", "propuesta", "modificacion", "aceptacion", "tipo trabajo", "estado", "proyecto"
+                "id", "1er Estudiante", "2do Estudiante", "3er estudiante", "docente", "codirector", "propuesta", "modificacion", "aceptacion", "tipo trabajo", "estado", "proyecto", "id_trab", "estado", "id_pdf"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -204,7 +204,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
             }
         });
 
-        txtIDarc.setEnabled(false);
+        txtIDArc.setEnabled(false);
 
         jlbNombreArchivo.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
 
@@ -261,7 +261,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
                                     .addGap(99, 99, 99)
                                     .addComponent(jLabel9)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtIDarc, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtIDArc, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addGap(11, 11, 11)
                                     .addComponent(btnSubirArc)
@@ -333,7 +333,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(txtIDarc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIDArc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCambiar)
@@ -380,14 +380,14 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
             jlbNombreArchivo.setText(nombre);
 
             myPDF.SubirArchivo(archivoPDF);
-            txtIDarc.setText(String.valueOf(myPDF.id));
+            txtIDArc.setText(String.valueOf(myPDF.id));
         } else {
             JOptionPane.showMessageDialog(null, "No se ha elegido ningun archivo");
         }
     }//GEN-LAST:event_btnSubirArcActionPerformed
 
     private void btnCambiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCambiarActionPerformed
-        if (archivoPDF == null) {
+        if (txtIDArc == null) {
             JOptionPane.showMessageDialog(null, "No se puede modificar el archivo porque no se ha insertado");
         } else {
             int yes = JOptionPane.showConfirmDialog(null, "¿Está seguro de cambiar este archivo?");
@@ -402,7 +402,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
                     archivoPDF = fileChooser.getSelectedFile();
                     String nombre = fileChooser.getName(archivoPDF);
                     jlbNombreArchivo.setText(nombre);
-                    myPDF.ModificarArchivo(archivoPDF, txtIDarc);
+                    myPDF.ModificarArchivo(archivoPDF, txtIDArc);
                 } else {
                     JOptionPane.showMessageDialog(null, "No se ha elegido ningun archivo");
                 }
@@ -415,11 +415,11 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
 
         if (yes == JOptionPane.YES_OPTION) {
             if (archivoPDF != null) {
-                myPDF.EliminarArchivo(txtIDarc);
+                myPDF.EliminarArchivo(txtIDArc);
                 archivoPDF = null;
                 jlbNombreArchivo.setText("");
-                myPDF.EliminarArchivo(txtIDarc);
-                txtIDarc.setText(null);
+                myPDF.EliminarArchivo(txtIDArc);
+                txtIDArc.setText(null);
             } else {
                 JOptionPane.showMessageDialog(null, "No se puede eliminar un archivo que no existe");
             }
@@ -427,21 +427,29 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarArcActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        invest.setIdPDF(txtIDarc);
+        invest.setIdPDF(txtIDArc);
         invest.setNom(nomProy);
         invest.setCombos(cmbEstudiante1, cmbEstudiante2, cmbEstudiante3, cmbDocente, cmbCodirector, cmbTipoProyecto);
         invest.Registrar();
         invest.LlenarTabla(jTable1);
+        invest.Limpiar();
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         invest.setIdTrabajo(txtIdTrabajo);
         invest.Eliminar();
+        invest.Limpiar();
+        invest.LlenarTabla(jTable1);
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         invest.setIdProy(txtIdProy);
+        invest.setIdPDF(txtIDArc);
+        invest.setIdTrabajo(txtIdTrabajo);
         invest.Modificar();
+        invest.LlenarTabla(jTable1);
+        
+        invest.Limpiar();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -454,6 +462,8 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
         invest.setCombos(cmbEstudiante1, cmbEstudiante2, cmbEstudiante3, cmbDocente, cmbCodirector, cmbTipoProyecto);
         invest.setNom(nomProy);
         invest.setIdProy(txtIdProy);
+        invest.setIdTrabajo(txtIdTrabajo);
+        invest.setIdPDF(txtIDArc);
         invest.SeleccionarFilas(jTable1);
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -520,7 +530,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel jlbNombreArchivo;
     private javax.swing.JTextField nomProy;
-    private javax.swing.JTextField txtIDarc;
+    private javax.swing.JTextField txtIDArc;
     private javax.swing.JTextField txtIdProy;
     private javax.swing.JTextField txtIdTrabajo;
     // End of variables declaration//GEN-END:variables

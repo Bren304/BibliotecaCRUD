@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package crudtrabajosdegrado;
 
 import java.sql.Connection;
@@ -10,11 +6,9 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class ViewLogin extends javax.swing.JFrame {
-
-    Connection con = Conect.Connect();
-    PreparedStatement ps;
-    ResultSet rs;
-    byte rol;
+    
+    Login myLog = new Login();
+    
     
     public ViewLogin() {
         initComponents();
@@ -96,29 +90,10 @@ public class ViewLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInicioDeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioDeSesionActionPerformed
-        try {
-            ps = con.prepareStatement("SELECT * FROM usuarios WHERE correo_institucional = ? AND contrasena = ?");
-            
-            ps.setString(1, txtCorreo.getText());
-            ps.setString(2, txtContrasena.getText());
-            
-            rs = ps.executeQuery();
-            
-            if(rs.next()){
-                JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso");
-                rol = (byte) rs.getInt("fk_rol");
-                
-                this.setVisible(false);
-                
-                ViewMenu myMenu = new ViewMenu();
-                myMenu.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "No ha podido ingresar, \npor favor intételo de nuevo");
-            }
-            
-        } catch (Exception e) {
-            System.err.println(e);
+        if (myLog.InicioSesion(txtCorreo, txtContrasena) > 0) {
+            this.setVisible(false);
         }
+        
     }//GEN-LAST:event_btnInicioDeSesionActionPerformed
 
     public static void main(String args[]) {
