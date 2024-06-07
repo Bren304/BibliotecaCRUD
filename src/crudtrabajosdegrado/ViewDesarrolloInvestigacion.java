@@ -18,6 +18,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
         user.LlenarComboEstudiantes(cmbEstudiante1, cmbEstudiante2, cmbEstudiante3);
         user.LlenarComboDoc(cmbDocente, cmbCodirector);
         invest.TipoProyecto(cmbTipoProyecto);
+        invest.LlenarTabla(jTable1);
     }
 
     @SuppressWarnings("unchecked")
@@ -93,21 +94,26 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "id", "1er Estudiante", "2do Estudiante", "3er estudiante", "docente", "codirector", "tipo trabajo", "estado", "proyecto"
+                "id", "1er Estudiante", "2do Estudiante", "3er estudiante", "docente", "codirector", "propuesta", "modificacion", "aceptacion", "tipo trabajo", "estado", "proyecto"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -118,7 +124,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 957, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -425,6 +431,7 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
         invest.setNom(nomProy);
         invest.setCombos(cmbEstudiante1, cmbEstudiante2, cmbEstudiante3, cmbDocente, cmbCodirector, cmbTipoProyecto);
         invest.Registrar();
+        invest.LlenarTabla(jTable1);
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -442,6 +449,13 @@ public class ViewDesarrolloInvestigacion extends javax.swing.JFrame {
         invest.setCombos(cmbEstudiante1, cmbEstudiante2, cmbEstudiante3, cmbDocente, cmbCodirector, cmbTipoProyecto);
         invest.Limpiar();
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        invest.setCombos(cmbEstudiante1, cmbEstudiante2, cmbEstudiante3, cmbDocente, cmbCodirector, cmbTipoProyecto);
+        invest.setNom(nomProy);
+        invest.setIdProy(txtIdProy);
+        invest.SeleccionarFilas(jTable1);
+    }//GEN-LAST:event_jTable1MouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
