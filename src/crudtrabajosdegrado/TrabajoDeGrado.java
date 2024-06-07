@@ -12,6 +12,4 @@ public abstract class TrabajoDeGrado {
     abstract void Eliminar();
     
     abstract void Devolver();
-    
-    abstract void SubirArchivo();
 }

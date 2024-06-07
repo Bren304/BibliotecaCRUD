@@ -29,7 +29,7 @@ public class Usuarios {
                 ps.setString(2, dni.getText());
                 ps.setString(3, correo.getText());
                 ps.setString(4, pass.getText());
-                ps.setInt(5, (rol.getSelectedIndex() + 1));
+                ps.setInt(5, (rol.getSelectedIndex() + 2));
 
                 int val = ps.executeUpdate();
 
@@ -55,7 +55,7 @@ public class Usuarios {
                 ps.setString(2, dni.getText());
                 ps.setString(3, correo.getText());
                 ps.setString(4, contrasena.getText());
-                ps.setInt(5, (rol.getSelectedIndex()+1));
+                ps.setInt(5, (rol.getSelectedIndex()+2));
                 ps.setString(6, id.getText());
                 
                 int val = ps.executeUpdate();
@@ -106,7 +106,7 @@ public class Usuarios {
     
     public void LlenarCombo(JComboBox comboRoles) {
         try {
-            ps = con.prepareStatement("SELECT nombre_rol FROM roles");
+            ps = con.prepareStatement("SELECT nombre_rol FROM roles WHERE id_rol > 1");
 
             rs = ps.executeQuery();
 
@@ -163,7 +163,7 @@ public class Usuarios {
     
     public void LlenarTabla(JTable tabla) {
         try {
-            ps = con.prepareStatement("SELECT * FROM usuarios INNER JOIN roles ON roles.id_rol = usuarios.fk_rol WHERE usuarios.estado = 1 ORDER BY usuarios.id_usuario");
+            ps = con.prepareStatement("SELECT * FROM usuarios INNER JOIN roles ON roles.id_rol = usuarios.fk_rol WHERE usuarios.estado = 1 AND usuarios.fk_rol > 1 ORDER BY usuarios.id_usuario");
 
             rs = ps.executeQuery();
 
